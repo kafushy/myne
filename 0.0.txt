@@ -1,0 +1,36 @@
+package myne;
+import java.util.Scanner;
+public class Myne {
+    public static void main(String[] args) {
+    Scanner read = new Scanner (System.in);
+    String[][]world=new String[9][9];
+    String input;
+    input="kafwshy";
+    int end=0,w=0,k=0,mspace=0;
+    while(end<1){
+        while(w<9){
+            while(k<9){
+                System.out.print(0);
+                if(mspace<8){
+                    System.out.print(" ");
+                    mspace++;
+                }
+                k++;
+            }
+            k=0;
+            mspace=0;
+            System.out.println();
+            w++;
+        }
+        w=0;
+        input=read.next();
+        if("esc".equals(input)){
+            end++;
+        }
+    }
+    }
+}
+
+Version 0.0 "World Build"
+-created a 9x9 world with even spacing (without using the world matrix cause i forgot it)
+-added a esc button
