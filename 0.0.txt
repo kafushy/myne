@@ -3,34 +3,241 @@ import java.util.Scanner;
 public class Myne {
     public static void main(String[] args) {
     Scanner read = new Scanner (System.in);
-    String[][]world=new String[9][9];
-    String input;
-    input="kafwshy";
-    int end=0,w=0,k=0,mspace=0;
-    while(end<1){
-        while(w<9){
-            while(k<9){
-                System.out.print(0);
-                if(mspace<8){
-                    System.out.print(" ");
-                    mspace++;
-                }
-                k++;
-            }
-            k=0;
-            mspace=0;
-            System.out.println();
-            w++;
+    System.out.println(" ____  ____  ____  ____ \n"+"||M ||||Y ||||N ||||E ||\n"+"||__||||__||||__||||__||\n"+"|/__\\||/__\\||/__\\||/__\\|\n");
+    //INPUT
+    String input="kafushy";
+    //CANVAS
+    int size=131;
+    //CAMERA
+    int cam=31,ca=cam/2;
+    //COORDINATES
+    int y=0,x=0;
+    //INTERLACER
+    int ry=0,rx=0;
+    //SPAWNER
+    int sy=0,sx=0,gy=0,gx=0;
+    //MISCELANNEA
+    int counter=0,a=0,end=0;
+    double c=0;
+    //WORLD MATRIX
+    String[][]world=new String[size][size];
+    //RENDER MATRIX
+    String[][]render=new String[ca][cam];
+    //THINGS VECTOR
+    String[]id=new String[10];
+    //SAFE SPAWN
+    int safey=size-cam,safex=size-cam;sy=(int)(Math.random() * safey+ca)+1;sx=(int)(Math.random() * safex+ca)+1;
+    //INDEX DECLARATION
+    id[0]=" ";//VOID
+    id[1]="X";//PLAYER
+    id[2]=".";//EARTH
+    id[3]="S";//SAND
+    id[4]="N";//SNOW
+    id[5]="W";//WATER
+    id[6]="I";//IRON
+    id[7]="R";//ROCK
+    id[8]="T";//TREE
+    id[9]="F";//FIRE
+    //WORLD GENERATION LOGIC
+    //GROUND
+    while(y<size){
+        while(x<size){
+            world[y][x]=id[2];
+            x++;
         }
-        w=0;
+        x=0;y++;
+    }
+    y=0;
+    //MINERALS
+    while(counter<size){
+        c=0;
+        while(c==0){
+            gy=(int)(Math.random() * safey+ca)+1;
+            gx=(int)(Math.random() * safex+ca)+1;
+            if(world[gy][gx].equals(id[2]) || world[gy][gx].equals(id[3]) || world[gy][gx].equals(id[4])){
+            c++;
+            }
+        }
+        while(y<size){
+            while(x<size){
+                c=(Math.random());
+                if(x==gx && y==gy){
+                    world[y][x]=id[6];
+                }
+                else if((Math.abs(gx-x))<=1 && (Math.abs(gy-y))<=1){
+                    if(c>0.05){
+                        if(c>0.8){
+                            world[y][x]=id[6];
+                        }
+                        else{
+                            world[y][x]=id[7];
+                        }
+                    }
+                }
+                else if((Math.abs(gx-x))<=2 && (Math.abs(gy-y))<=2){
+                    if(c>0.2){
+                        if(c>0.95){
+                            world[y][x]=id[6];
+                        }
+                        else{
+                            world[y][x]=id[7];
+                        }
+                    }
+                }
+                else if((Math.abs(gx-x))<=3 && (Math.abs(gy-y))<=3){
+                    if(c>0.8){
+                        if(c>0.99){
+                            world[y][x]=id[6];
+                        }
+                        else{
+                            world[y][x]=id[7];
+                        }
+                    }
+                }
+                x++;
+            }
+            x=0;y++;
+        }
+        y=0;
+        counter+=(int)(Math.random() * 6);
+    }
+    counter=0;
+    //WATER
+    /*sx=(int)(Math.random() * safex-ca)+cam;
+    while(counter<size-ca/2){
+        c=(Math.random());
+        if((Math.abs(a))>2){
+            a=0;
+        }
+        if(c>0.8 && a>=0){
+            a++;
+            sx++;
+            world[counter][sx+3]=id[3];
+            world[counter][sx+2]=id[5];
+            world[counter][sx+1]=id[5];
+            world[counter][sx+0]=id[5];
+            world[counter][sx-1]=id[5];
+            world[counter][sx-2]=id[5];
+            world[counter][sx-3]=id[3];
+        }
+        else if(c<0.2 && a<=0){
+            a--;
+            sx--;
+            world[counter][sx+3]=id[3];
+            world[counter][sx+2]=id[5];
+            world[counter][sx+1]=id[5];
+            world[counter][sx+0]=id[5];
+            world[counter][sx-1]=id[5];
+            world[counter][sx-2]=id[5];
+            world[counter][sx-3]=id[3];
+        }
+        else{
+            world[counter][sx+3]=id[3];
+            world[counter][sx+2]=id[5];
+            world[counter][sx+1]=id[5];
+            world[counter][sx+0]=id[5];
+            world[counter][sx-1]=id[5];
+            world[counter][sx-2]=id[5];
+            world[counter][sx-3]=id[3];
+        }
+        counter++;
+    }*/
+    //FARLANDS
+    while(y<size){
+        while(x<size){
+            //TOP BOUNDARY
+            if(y<(ca/2)){
+                world[y][x]=id[0];
+            }
+            //BOT BOUNDARY
+            else if(y>size-(ca/2)-1){
+                world[y][x]=id[0];
+            }
+            //LEFT BOUNDARY
+            else if(x<ca){
+                world[y][x]=id[0];
+            }
+            //RIGHT BOUNDARY
+            else if(x>size-(ca)-1){
+                world[y][x]=id[0];
+            }
+            //DEBUGGING MAP
+            System.out.print(world[y][x]);
+            System.out.print(" ");
+            x++;
+        }
+        System.out.println();
+        x=0;y++;
+    }
+    y=0;
+    //PLAYER
+    /*while(c==0){
+        sy=(int)(Math.random() * safey+ca)+1;
+        sx=(int)(Math.random() * safex+ca)+1;
+        if(world[sy][sx].equals(id[2]) || world[sy][sx].equals(id[3]) || world[sy][sx].equals(id[4])){
+            c++;
+        }
+    }*/
+    c=0;
+    //GAME STARTS HERE
+    while(end<1){
+        //RENDER
+        System.out.println(sy+" "+sx);
+        while(x<2*cam+1){
+            System.out.print("-");
+            x++;
+        }
+        System.out.println();
+        while(ry<ca){
+            System.out.print("|");
+            while(rx<cam){
+                render[ry][rx]=world[sy-ca+ry][sx-ca+rx];
+                if(ry==(ca-1)/2 && rx==ca){
+                    System.out.print(id[1]);
+                }
+                else{
+                    System.out.print(render[ry][rx]);
+                }
+                if(rx<cam-1){
+                    System.out.print(" ");
+                }
+                else{
+                    System.out.print("|");
+                }
+                rx++;
+            }
+            System.out.println();
+            rx=0;ry++;
+        }
+        ry=0;
+        while(x>0){
+            System.out.print("-");
+            x--;
+        }
+        System.out.println();
+        //COMMANDS
         input=read.next();
-        if("esc".equals(input)){
+        //MOVEMENT
+        //UP
+        if("w".equals(input)){
+            sy--;
+        }
+        //LEFT
+        if("a".equals(input)){
+            sx--;
+        }
+        //DOWN
+        if("s".equals(input)){
+            sy++;
+        }
+        //RIGHT
+        if("d".equals(input)){
+            sx++;
+        }
+        //"ESC" TO END THE GAME
+        if("/esc".equals(input)){
             end++;
         }
     }
-    }
 }
-
-Version 0.0 "World Build"
--created a 9x9 world with even spacing (without using the world matrix cause i forgot it)
--added a esc button
+}
